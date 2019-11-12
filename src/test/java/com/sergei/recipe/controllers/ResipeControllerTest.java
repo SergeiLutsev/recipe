@@ -40,7 +40,7 @@ public class ResipeControllerTest {
 
         when(recipeServise.findById(anyLong())).thenReturn(rcp);
 
-        mvc.perform(get("/recipe/show/1"))
+        mvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/recipe/show"));
 

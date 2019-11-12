@@ -4,11 +4,14 @@ import com.sergei.recipe.commands.RecipeCommand;
 import com.sergei.recipe.domain.Ingredient;
 import com.sergei.recipe.domain.Notes;
 import com.sergei.recipe.domain.Recipe;
+import com.sergei.recipe.exceptions.NotFoundException;
 import com.sergei.recipe.servises.RecipeServise;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Set;
 @Slf4j
@@ -54,6 +57,15 @@ public class RecipeController {
         recipeServise.deleteById(Long.valueOf(id));
         log.debug("id "+id+" was deleted");
         return "redirect:/";
+    }
+
+    @ResponseStatus(code = HttpStatus.NOT_FOUND)//it is not necessary. Just for test
+    @ExceptionHandler(NotFoundException.class)
+    public ModelAndView handNotFound(){
+        log.error("Handeling not found exception");
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("404error.html");
+        return mv;
     }
 
 }
