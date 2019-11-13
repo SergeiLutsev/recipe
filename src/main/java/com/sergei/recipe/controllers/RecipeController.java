@@ -4,6 +4,7 @@ import com.sergei.recipe.commands.RecipeCommand;
 import com.sergei.recipe.domain.Ingredient;
 import com.sergei.recipe.domain.Notes;
 import com.sergei.recipe.domain.Recipe;
+import com.sergei.recipe.exceptions.BadRequestException;
 import com.sergei.recipe.exceptions.NotFoundException;
 import com.sergei.recipe.servises.RecipeServise;
 import lombok.extern.slf4j.Slf4j;
@@ -24,12 +25,17 @@ public class RecipeController {
     }
 
     @GetMapping({"/recipe/{id}/show"})
-    private String showById(@PathVariable String id, Model model){
-        Recipe rc=recipeServise.findById(Long.valueOf(id));
-        Notes notes=rc.getNotes();
+    private String showById(@PathVariable String id, Model model) {
+        try {
+            Recipe rc = recipeServise.findById(Long.valueOf(id));
+            Notes notes = rc.getNotes();
+            model.addAttribute("recipe", rc);
+        }catch (Exception ex){
+            throw new BadRequestException(ex.getMessage()+"!!!!!");
+        }
+            return "/recipe/show";
 
-        model.addAttribute("recipe",rc);
-        return "/recipe/show";
+
     }
 
     @GetMapping({"/recipe/new"})
@@ -59,13 +65,25 @@ public class RecipeController {
         return "redirect:/";
     }
 
-    @ResponseStatus(code = HttpStatus.NOT_FOUND)//it is not necessary. Just for test
+   @ResponseStatus(code = HttpStatus.NOT_FOUND)//it is not necessary. Just for test
     @ExceptionHandler(NotFoundException.class)
-    public ModelAndView handNotFound(){
+    public ModelAndView handNotFound(Exception exception){
         log.error("Handeling not found exception");
+        log.error(exception.getMessage());
         ModelAndView mv=new ModelAndView();
         mv.setViewName("404error.html");
+        mv.addObject("exception",exception);
+
         return mv;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(BadRequestException.class)
+    public ModelAndView handBadRequest(Exception ex){
+        ModelAndView mv=new ModelAndView();
+        mv.setViewName("badRequest");
+        mv.addObject("exception",ex);
+        return  mv;
     }
 
 }

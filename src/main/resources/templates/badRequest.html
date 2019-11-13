@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>404 error</title>
+    <title>Bad request</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
           integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"
@@ -15,12 +15,13 @@
             crossorigin="anonymous" th:src="@{/webjars/bootstrap/3.4.1/js/bootstrap.min.js}"></script>
 </head>
 <body>
-    <div class="container-fluid">
-        <div class="col-md-6 col-md-offset-3">
-            <h1 style="color: brown">Huston we have a problem!!!</h1>
-            <h3>404 Not found</h3>
-            <p th:text="${exception.getMessage()}"></p>
-        </div>
+<div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3">
+        <h1 style="color: darkblue">Huston we have a problem!!!</h1>
+        <h3>Bad fukin request</h3>
+        <p th:text="${exception.getMessage()}"></p>
     </div>
+</div>
+
 </body>
 </html>

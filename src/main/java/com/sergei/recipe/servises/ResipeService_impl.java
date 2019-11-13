@@ -43,7 +43,7 @@ public class ResipeService_impl implements RecipeServise {
         Optional<Recipe> optRecipe=recipeRepository.findById(id);
         if(!optRecipe.isPresent()){
            // throw new RuntimeException("Recipe not found!!!");
-            throw new NotFoundException("Recipe id is not correct");
+            throw new NotFoundException("Recipe id is not correct for id: "+id.toString());
         }
         return optRecipe.get();
     }
