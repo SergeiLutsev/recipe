@@ -1,10 +1,8 @@
 package com.sergei.recipe.controllers;
 
 import com.sergei.recipe.commands.RecipeCommand;
-import com.sergei.recipe.domain.Ingredient;
 import com.sergei.recipe.domain.Notes;
 import com.sergei.recipe.domain.Recipe;
-import com.sergei.recipe.exceptions.BadRequestException;
 import com.sergei.recipe.exceptions.NotFoundException;
 import com.sergei.recipe.servises.RecipeServise;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Set;
 @Slf4j
 @Controller
 public class RecipeController {
@@ -26,23 +23,15 @@ public class RecipeController {
 
     @GetMapping({"/recipe/{id}/show"})
     private String showById(@PathVariable String id, Model model) {
-        try {
             Recipe rc = recipeServise.findById(Long.valueOf(id));
             Notes notes = rc.getNotes();
             model.addAttribute("recipe", rc);
-        }catch (Exception ex){
-            throw new BadRequestException(ex.getMessage()+"!!!!!");
-        }
             return "/recipe/show";
-
-
     }
 
     @GetMapping({"/recipe/new"})
     public String createRecipe(Model model){
-
         model.addAttribute("recipe",new RecipeCommand());
-
         return "recipe/recipeform";
     }
 
@@ -78,12 +67,16 @@ public class RecipeController {
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(BadRequestException.class)
+    @ExceptionHandler(NumberFormatException.class)
     public ModelAndView handBadRequest(Exception ex){
+        log.debug("Handeling Number Format Exception");
+        log.debug(ex.getMessage());
         ModelAndView mv=new ModelAndView();
         mv.setViewName("badRequest");
         mv.addObject("exception",ex);
         return  mv;
     }
+
+
 
 }
