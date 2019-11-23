@@ -6,6 +6,7 @@ import com.sergei.recipe.repositories.RecipeRepository;
 import com.sergei.recipe.repositories.UnitOfMesureRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.*;
 @Slf4j
 @Component
+@Profile("default")
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
@@ -24,6 +26,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         this.recipeRepository = recipeRepository;
 
         this.unitOfMesureRepository = unitOfMesureRepository;
+
     }
 
 
